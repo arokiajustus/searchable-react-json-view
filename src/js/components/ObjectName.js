@@ -1,6 +1,8 @@
 import React from 'react';
 import Theme from './../themes/getStyle';
 import splitAndPushByDelimiter from './../helpers/splitAndPushByDelimiter';
+import getActualHighlightSearch from './../helpers/getActualHighlightSearch';
+import searchMatch from './../helpers/searchMatch';
 
 export default function getObjectName(props) {
     const { parent_type, namespace, theme, jsvRoot, name, highlightSearch, highlightSearchColor } = props;
@@ -21,11 +23,11 @@ export default function getObjectName(props) {
             <span {...Theme(theme, 'object-name')} key={namespace}>
                 <span class='object-key'>
                     <span style={{ verticalAlign: 'top' }}>"</span>
-                    {splitAndPushByDelimiter(display_name, highlightSearch).map((word, i) => (
+                    {splitAndPushByDelimiter(display_name, getActualHighlightSearch(highlightSearch)).map((word, i) => (
                             <span
                                 key={i}
                                 style={{
-                                    backgroundColor: i % 2 === 1 ? highlightSearchColor : 'transparent',
+                                    backgroundColor: i % 2 === 1 && searchMatch(display_name, props) ? highlightSearchColor : 'transparent',
                                 }}
                             >
                                 {word}

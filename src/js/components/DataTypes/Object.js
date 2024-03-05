@@ -9,6 +9,8 @@ import VariableEditor from './../VariableEditor';
 import VariableMeta from './../VariableMeta';
 import ArrayGroup from './../ArrayGroup';
 import ObjectName from './../ObjectName';
+import getActualHighlightSearch from './../../helpers/getActualHighlightSearch';
+import searchMatch from './../../helpers/searchMatch';
 
 //attribute store
 import AttributeStore from './../../stores/ObjectAttributes';
@@ -187,8 +189,10 @@ class RjvObject extends React.PureComponent {
         } = this.props;
 
         const { object_type, expanded } = this.state;
+        // console.log("Object => " + this.props.namespace);
+        // const objectContainingSearch = searchMatch(src, this.props);
         const objectContainingSearch = rest.highlightSearch && 
-            JSON.stringify(src).toLowerCase().includes(rest.highlightSearch.toLowerCase());
+            JSON.stringify(src).toLowerCase().includes(getActualHighlightSearch(rest.highlightSearch));
 
         let styles = {};
         if (!jsvRoot && parent_type !== 'array_group') {

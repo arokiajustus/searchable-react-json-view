@@ -4,6 +4,8 @@ import Theme from './../themes/getStyle';
 import VariableMeta from './VariableMeta';
 import ObjectName from './ObjectName';
 import ObjectComponent from './DataTypes/Object';
+import getActualHighlightSearch from './../helpers/getActualHighlightSearch';
+import searchMatch from './../helpers/searchMatch';
 
 //icons
 import { CollapsedIcon, ExpandedIcon } from './ToggleIcons';
@@ -36,7 +38,9 @@ export default class extends React.PureComponent {
         const expandedGroups = {};
         for (let i in [...Array(groups)]) {
             const groupSrc = this.props.src.slice(i * size, i * size + size)
-            const groupContainingSearch = this.props.highlightSearch && JSON.stringify(groupSrc).toLowerCase().includes(this.props.highlightSearch.toLowerCase());
+            // console.log("Arraygroup => " + this.props.namespace);
+            // const groupContainingSearch = searchMatch(groupSrc, this.props);
+            const groupContainingSearch = this.props.highlightSearch && JSON.stringify(groupSrc).toLowerCase().includes(getActualHighlightSearch(this.props.highlightSearch));
             if (groupContainingSearch) {
                 expandedGroups[i] = true;
             }

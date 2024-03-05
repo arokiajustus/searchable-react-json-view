@@ -2,6 +2,8 @@ import React from 'react';
 import DataTypeLabel from './DataTypeLabel';
 import { toType } from './../../helpers/util';
 import splitAndPushByDelimiter from './../../helpers/splitAndPushByDelimiter';
+import getActualHighlightSearch from './../../helpers/getActualHighlightSearch';
+import searchMatch from './../../helpers/searchMatch';
 
 //theme
 import Theme from './../../themes/getStyle';
@@ -42,15 +44,16 @@ export default class extends React.PureComponent {
         let { value } = props;
         let collapsible = toType(collapseStringsAfterLength) === 'integer';
         let style = { cursor: 'default' };
-
-        if (props.highlightSearch && `"${value}"`.toLowerCase().includes(props.highlightSearch.toLowerCase())) {
+        // console.log("String => " + props.namespace);
+        // if (searchMatch(`"${value}"`, props)) {
+        if (props.highlightSearch && `"${value}"`.toLowerCase().includes(getActualHighlightSearch(props.highlightSearch))) {
             return <div {...Theme(theme, 'string')}>
                 <DataTypeLabel type_name={type_name} {...props} />
-                {splitAndPushByDelimiter(`"${value}"`, props.highlightSearch).map((word, i) => [
+                {splitAndPushByDelimiter(`"${value}"`, getActualHighlightSearch(props.highlightSearch)).map((word, i) => [
                     <span
                         key={i}
                         class="string-value"
-                        style={{backgroundColor: i%2 === 1 ? props.highlightSearchColor : 'transparent', ...style}}
+                        style={{backgroundColor: i%2 === 1 && searchMatch(`"${value}"`, props) ? props.highlightSearchColor : 'transparent', ...style}}
                         onClick={this.toggleCollapsed}
                     >
                         {word}

@@ -7,6 +7,9 @@ import parseInput from './../helpers/parseInput';
 import stringifyVariable from './../helpers/stringifyVariable';
 import CopyToClipboard from './CopyToClipboard';
 import splitAndPushByDelimiter from './../helpers/splitAndPushByDelimiter';
+import getActualHighlightSearch from './../helpers/getActualHighlightSearch';
+import searchMatch from './../helpers/searchMatch';
+import focusHighlightWord from './../helpers/focusHighlightWord';
 
 //data type components
 import {
@@ -40,6 +43,26 @@ class VariableEditor extends React.PureComponent {
                 value: null,
             },
         };
+    }
+
+    componentDidUpdate(prevProps) {
+        // console.log(prevProps.highlightSearchColor);
+        if (this.props.highlightSearch !== "") {
+        const highlightCurrentSearchColor = this.props.highlightSearchColor;
+        setTimeout(function() {
+            focusHighlightWord(highlightCurrentSearchColor);
+            // const el = document.getElementById('memberId_false.objecttoscrub.claim.referralauthorization.insurance');
+            // console.log(el);
+            // el.setAttribute('tabindex', '0');
+            // el.focus();
+        }, 20);
+    }
+        // const el = document.getElementById('memberId_false.objecttoscrub.claim.referralauthorization.insurance');
+        // console.log(el);
+        // el.setAttribute('tabindex', '0');
+        // el.focus();
+        // el.focus();
+        // setTimeout(el.focus(), 100);
     }
 
     render() {
@@ -81,17 +104,18 @@ class VariableEditor extends React.PureComponent {
                     <span>
                         <span {...Theme(theme, 'object-name')} class='object-key' key={variable.name + '_' + namespace}>
                             <span style={{ verticalAlign: 'top' }}>"</span>
-                            {splitAndPushByDelimiter(variable.name, highlightSearch).map((word, i) => (
+                            {splitAndPushByDelimiter(variable.name, getActualHighlightSearch(highlightSearch)).map((word, i) => (
                                     <span
                                         key={i}
                                         style={{
                                             display: 'inline-block',
-                                            backgroundColor: i % 2 === 1 ? highlightSearchColor : 'transparent',
+                                            backgroundColor: i % 2 === 1 && searchMatch(variable.name, this.props) ? highlightSearchColor : 'transparent',
                                         }}
                                     >
                                         {word}
                                     </span>
                             ))}
+                            {/* {focusHighlightWord()} */}
                             <span style={{ verticalAlign: 'top' }}>"</span>
                         </span>
                         <span {...Theme(theme, 'colon')}>:</span>

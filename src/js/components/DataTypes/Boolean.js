@@ -1,6 +1,8 @@
 import React from 'react';
 import DataTypeLabel from './DataTypeLabel';
 import splitAndPushByDelimiter from './../../helpers/splitAndPushByDelimiter';
+import getActualHighlightSearch from './../../helpers/getActualHighlightSearch';
+import searchMatch from './../../helpers/searchMatch';
 
 //theme
 import Theme from './../../themes/getStyle';
@@ -15,10 +17,10 @@ export default class extends React.PureComponent {
 
         return <div {...Theme(theme, 'boolean')}>
             <DataTypeLabel type_name={type_name} {...props} />
-            {splitAndPushByDelimiter(String(value), highlightSearch).map((char, i) => [
+            {splitAndPushByDelimiter(String(value), getActualHighlightSearch(highlightSearch)).map((char, i) => [
                 <span
                     key={i}
-                    style={{backgroundColor: i%2 === 1 ? highlightSearchColor : 'transparent'}}
+                    style={{backgroundColor: i%2 === 1 && searchMatch(String(value), props) ? highlightSearchColor : 'transparent'}}
                 >
                     {char}
                 </span>

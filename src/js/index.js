@@ -130,6 +130,13 @@ class ReactJsonView extends React.PureComponent {
                 this.state.src
             );
         }
+
+        if (this.props.highlightSearch != "") {
+            const warningSpan = document.getElementById('warning-msg');
+            warningSpan.textContent = "Searching...";
+            // const loaderDiv = document.getElementById('loader');
+            // loaderDiv.style.display = "block";
+        }
     }
 
     componentWillUnmount() {
@@ -195,11 +202,20 @@ class ReactJsonView extends React.PureComponent {
 
         const { style, defaultValue } = this.props;
 
+        const warningStyle = {
+            color: "red",
+            backgroundColor: "white",
+            textAlign: "center",
+            paddingBottom: "10px"
+        };
+
         return (
             <div
                 class="react-json-view"
                 style={{...Theme(theme, 'app-container').style, ...style}}
             >
+                <div id="loader" style={{display:"none"}} class="loading">Loading&#8230;</div>
+                <div id="warning-msg" style={warningStyle}></div>
                 <ValidationFailure
                     message={validationMessage}
                     active={validationFailure}
